@@ -1,0 +1,76 @@
+{# 
+	le fichier base.html permet de créer le conteneur par défaut de notre site, un peu comme un template parent
+	par defaut tout les autres template herite du template base 
+#}
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			{# les blocs permets de créer des zones pouvant être ecraser au besoin par les templates enfants #}
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link
+		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		{% block stylesheets %}
+			{# {{ encore_entry_link_tags('app') }} #}
+			{# <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css"> #}
+			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> <link rel="stylesheet" href="/assets/css/style.css">
+		{% endblock %}
+
+		{% block javascripts %}
+			{# {{ encore_entry_script_tags('app') }} #}
+			{# // <script src="./../node_modules/bootstrap/dist/js/bootstrap.min.js" defer></script> #}<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"> </script>
+		{% endblock %}
+	</head>
+	<body>
+		<header>
+			<nav>
+				<ul>
+					<li>
+						<a href="{{url('app_home')}}">Accueil</a>
+					</li>
+					<li>
+						<a href="{{url('app_article_index')}}">Liste des articles</a>
+					</li>
+					{% if app.user %}
+						<li>
+							<a href="{{url('app_logout')}}">Logout</a>
+						</li>
+					{% else %}
+						<li>
+							<a href="{{url('app_login')}}">Login</a>
+						</li>
+					{% endif %}
+					<li>
+							<a href="{{url('app_todo_index')}}">Todo</a>
+					</li>
+					<li>
+						{# {{dump(app)}} #}
+						{% if(app.request.pathInfo) == "/" %}
+							<a href="{{url('app_test', {'param': valeur })}}">test param</a>
+						{% else %}
+							<a href="{{url('app_test', {'param': 42 })}}">test param</a>
+						{% endif %}
+					</li>
+				</li>
+			</ul>
+		</nav>
+	</body>
+</html></header><main>
+<section class="m-3 p-2">
+	{% for type, messages in app.session.flashbag.all() %}
+		{% for message in messages %}
+			<div class="alert alert-dismissible alert-{{ type }}">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				<strong>{{ type }}!</strong>
+				{{ message }}.
+			</div>
+		{% endfor %}
+	{% endfor %}
+</section>
+{% block body %}{% endblock %}</main></body></html>
